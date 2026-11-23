@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}"></head>
+<body>
+<header th:replace="~{fragments/navbar}"></header>
+<main class="container">
+    <h1>Лоты</h1>
+
+
+    <div class="grid" th:if="${!#lists.isEmpty(lots)}">
+        <article class="card" th:each="lot : ${lots}">
+            <h2 th:text="${lot.title}">Название</h2>
+            <p th:text="${lot.description}">Описание</p>
+            <p>
+                Текущая цена:
+                <span th:text="${lot.currentPrice}">0</span> ₽
+            </p>
+            <a th:href="@{/lots/{id}(id=${lot.id})}">Подробнее</a>
+        </article>
+    </div>
+
+    <p th:if="${#lists.isEmpty(lots)}">Лотов пока нет.</p>
+</main>
+<footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>

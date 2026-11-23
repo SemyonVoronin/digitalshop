@@ -1,0 +1,9 @@
+CREATE TABLE bids (
+    id UUID PRIMARY KEY,
+    created_at TIMESTAMP(6) WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP(6) WITH TIME ZONE NOT NULL,
+    lot_id UUID NOT NULL,
+    buyer_id BIGINT NOT NULL,
+    amount NUMERIC(19, 2) NOT NULL,
+    CONSTRAINT fk_bid_lot FOREIGN KEY (lot_id) REFERENCES lots (id) ON DELETE CASCADE
+);

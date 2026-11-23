@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}"></head>
+<body>
+<header th:replace="~{fragments/navbar}"></header>
+<main class="container">
+    <article class="card">
+        <h1 th:text="${lot.title}">Название</h1>
+        <p th:text="${lot.description}">Описание</p>
+        <dl>
+            <dt>Начальная цена</dt>
+            <dd><span th:text="${lot.startPrice}">0</span> ₽</dd>
+            <dt>Текущая цена</dt>
+            <dd><span th:text="${lot.currentPrice}">0</span> ₽</dd>
+            <dt>Статус</dt>
+            <dd th:text="${lot.status}">ACTIVE</dd>
+            <dt>Завершается</dt>
+            <dd th:text="${lot.endsAt}">—</dd>
+        </dl>
+    </article>
+
+    <h2>Ставки</h2>
+    <p th:if="${bids.isEmpty()}">Ставок пока нет.</p>
+    <ul th:unless="${bids.isEmpty()}">
+        <li th:each="bid : ${bids}">
+            Покупатель <span th:text="${bid.buyerId}"></span>
+            поставил <span th:text="${bid.amount}"></span> ₽
+        </li>
+    </ul>
+
+    <!-- Форма для ставки -->
+    <div class="card" style="margin-top: 20px;">
+        <h3>Сделать ставку</h3>
+
+        <form th:action="@{/lots/{id}/bid(id=${lot.id})}" method="post">
+            <p>
+                <label>Сумма ставки:</label>
+                <input type="number" step="0.01" name="amount" required>
+            </p>
+            <button type="submit">Поставить</button>
+        </form>
+
+        <p th:if="${error}" style="color: red;" th:text="${error}"></p>
+    </div>
+
+    <a th:href="@{/lots}">Вернуться к списку</a>
+</main>
+<footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>

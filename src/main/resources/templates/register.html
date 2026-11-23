@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}"></head>
+<body>
+<header th:replace="~{fragments/navbar}"></header>
+<main class="container">
+    <h1>Регистрация</h1>
+
+    <div th:if = "${success}" class="card">
+        <p>Регистрация прошла успешно <a th:href="@{/}">На главную</a> </p>
+    </div>
+
+    <div th:if = "${error}" class="card" style="color : red;">
+        <p th:text="${error}">Ошибка</p>
+    </div>
+
+    <form th:unless="${success}" th:action="@{/register}" th:object="${user}" method="post">
+        <p>
+            <label>Имя пользователя:</label>
+            <input type="text" th:field="*{username}" required>
+        </p>
+        <p>
+            <label>Email:</label>
+            <input type="email" th:field="*{email}" required>
+        </p>
+        <p>
+            <label>Пароль:</label>
+            <input type="password" th:field="*{password}" required>
+        </p>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+</main>
+<footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>

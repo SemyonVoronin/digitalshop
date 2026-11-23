@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}"></head>
+<body>
+<header th:replace="~{fragments/navbar}"></header>
+<main id="main-content" class="container">
+    <h1>Корзина</h1>
+
+    <p th:if="${success}" style="color: green;" th:text = "${success}"></p>
+    <p th:if="${error}" style="color: red;" th:text = "${error}"></p>
+
+    <p th:if="${#lists.isEmpty(cart)}">
+        Ваша корзина пуста. <a th:href="@{/products}">Перейти к товарам</a>
+    </p>
+
+    <div th:unless="${#lists.isEmpty(cart)}">
+        <table class="card" style="width: 100%; border-collapse: collapse;">
+            <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Цена</th>
+                <th>Кол-во</th>
+                <th>Сумма</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${cart}">
+                <td th:text="${item.product.title}">Название</td>
+                <td><span th:text="${item.product.price}">0</span> ₽</td>
+                <td th:text="${item.quantity}">1</td>
+                <td><span th:text="${item.getTotalPrice()}">0</span> ₽</td>
+                <td>
+                    <form th:action="@{/cart/remove/{id}(id=${item.product.id})}" method="post">
+                        <button type="submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3 style="margin-top: 20px;">Итого: <span th:text="${total}">0</span> ₽</h3>
+
+        <form th:action="@{/cart/checkout}" method="post">
+            <button type="submit" style="padding: 10px 20px; font-size: 16px;">Оформить заказ</button>
+        </form>
+    </div>
+
+    <p style="margin-top: 20px;"><a th:href="@{/products}">Вернуться к товарам</a></p>
+</main>
+<footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>

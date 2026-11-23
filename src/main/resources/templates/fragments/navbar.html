@@ -1,0 +1,23 @@
+<header th:fragment="navbar" xmlns:th="http://www.thymeleaf.org">
+    <nav aria-label="Основная навигация">
+        <a th:href="@{/}">Главная 🔮</a>
+        <a th:href="@{/lots}">Все лоты 🎲</a>
+        <a th:href="@{/lots/active}">Активные лоты 🎯</a>
+        <a th:href="@{/products}">Товары 🖥️</a>
+        <a th:href="@{/cart}">Корзина 🛒</a>
+        <a th:href="@{/register}">Регистрация 👤</a>
+
+        <!-- Если пользователь вошёл -->
+        <span th:if="${session.currentUser != null}">
+            Привет, <span th:text="${session.currentUser.username}"></span>!
+            <a th:href="@{/logout}">Выйти</a>
+        </span>
+
+        <!-- Если не вошёл -->
+        <span th:unless="${session.currentUser != null}">
+            <a th:href="@{/login}">Войти</a>
+            <a th:href="@{/register}">Регистрация</a>
+        </span>
+
+    </nav>
+</header>

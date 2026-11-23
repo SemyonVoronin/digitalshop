@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}"></head>
+<body>
+<header th:replace="~{fragments/navbar}"></header>
+<main class="container">
+    <h1>Товары</h1>
+
+    <div class="grid" th:if="${!#lists.isEmpty(products)}">
+        <article class="card" th:each="product : ${products}">
+            <h2 th:text="${product.title}">Название</h2>
+            <p th:text="${product.description}">Описание</p>
+            <p>
+                Текущая цена:
+                <span th:text="${product.price}">0</span> ₽
+            </p>
+            <a th:text="${product.type}">GAME</a>
+            <form th:action="@{/cart/add/{id}(id=${product.id})}" method="post">
+                <button type="submit">В корзину</button>
+            </form>
+        </article>
+    </div>
+
+    <p th:if="${#lists.isEmpty(products)}">Товаров пока нет.</p>
+
+</main>
+<footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>
