@@ -7,6 +7,7 @@ import school.voronin.digitalshop.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CartService {
@@ -36,7 +37,7 @@ public class CartService {
         cart.add(0, new CartItem(product, 1));
     }
 
-    public void removeFromCart(HttpSession session, Long productId){
+    public void removeFromCart(HttpSession session, UUID productId){
         List<CartItem> cart = getCart(session);
         cart.removeIf(item -> item.product().id().equals(productId));
     }

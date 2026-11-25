@@ -3,13 +3,14 @@ package school.voronin.digitalshop.service;
 import school.voronin.digitalshop.model.Product;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ProductService {
     List<Product> getAllProducts();
-    Product getProductById(Long id);
+    Product getProductById(UUID id);
     Product createProduct(Product product);
-    Product updateProduct(Long id, Product product);
-    void deleteProduct(Long id);
-    void decreaseStock(Long productId, int quantity);
+    Product updateProduct(UUID id, Product product);
+    void deleteProduct(UUID id);
+    void decreaseStock(UUID productId, int quantity);
 
 }

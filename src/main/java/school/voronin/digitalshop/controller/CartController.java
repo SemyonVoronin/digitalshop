@@ -14,6 +14,7 @@ import school.voronin.digitalshop.service.CartService;
 import school.voronin.digitalshop.service.ProductService;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/cart")
@@ -35,7 +36,7 @@ public class CartController {
     }
 
     @PostMapping("/remove/{productId}")
-    public String removeFromCart(@PathVariable Long productId, HttpSession session){
+    public String removeFromCart(@PathVariable UUID productId, HttpSession session){
         cartService.removeFromCart(session, productId);
         return "redirect:/cart";
     }
@@ -65,7 +66,7 @@ public class CartController {
     }
 
     @PostMapping("/add/{productId}")
-    public String addToCart(@PathVariable Long productId, HttpSession session, RedirectAttributes redirectAttributes){
+    public String addToCart(@PathVariable UUID productId, HttpSession session, RedirectAttributes redirectAttributes){
         User currentUser = (User) session.getAttribute("currentUser");
         if (currentUser == null){
             redirectAttributes.addFlashAttribute("error", "Войдите, чтобы добавить в корзину");

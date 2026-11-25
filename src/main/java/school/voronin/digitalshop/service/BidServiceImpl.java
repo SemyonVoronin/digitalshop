@@ -26,31 +26,20 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public List<Bid> getBidsByLotId(Long lotId) {
-        UUID realUuid = lotRepository.findAll().stream()
-                .filter(l -> l.getId() != null && l.getId().hashCode() == lotId.intValue())
-                .map(LotEntity::getId)
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Лот не найден: " + lotId));
-
-        // Ищем ставки по UUID
-        return bidRepository.findByLotId(realUuid).stream()
-                .map(this::toDomain)
-                .toList();
+    public List<Bid> getBidsByLotId(UUID lotId) {
+        return bidRepository.findByLotId(lotId).stream().map(this::toDomain).toList();
     }
 
     @Override
-    public Bid getTopBid(Long lotId){
-        UUID uuid = new UUID(0, lotId);
-        return bidRepository.findTopByLotIdOrderByAmountDesc(uuid).map(this::toDomain).
-                orElseThrow(() -> new NoSuchElementException("Ставок нет"));
+    public Bid getTopBid(UUID lotId){
+        return bidRepository.findTopByLotIdOrderByAmountDesc(lotId).
+                map(this::toDomain).orElseThrow(() -> new NoSuchElementException("Ставок нет"));
     }
 
     @Override
-    public synchronized Bid placeBid(Long lotId, Long buyerId, BigDecimal amount){
-        LotEntity lot = lotRepository.findAll().stream().
-                filter(l -> l.getId() != null && l.getId().hashCode() == lotId.intValue()).
-                findFirst().orElseThrow(() -> new NoSuchElementException("Лот не найден"));
+    public synchronized Bid placeBid(UUID lotId, UUID buyerId, BigDecimal amount){
+        LotEntity lot = lotRepository.findById(lotId).
+                orElseThrow(() -> new NoSuchElementException("Лот не найден"));
 
         if (lot.getStatus() != LotStatus.ACTIVE){
             throw new IllegalStateException("Лот не активен");
@@ -76,12 +65,10 @@ public class BidServiceImpl implements BidService {
         return toDomain(saved);
     }
 
-
-
     private Bid toDomain(BidEntity entity) {
         return new Bid(
-                (long) entity.getId().hashCode(),
-                (long) entity.getLotId().hashCode(),
+                entity.getId(),
+                entity.getLotId(),
                 entity.getBuyerId(),
                 entity.getAmount(),
                 entity.getCreatedAt()

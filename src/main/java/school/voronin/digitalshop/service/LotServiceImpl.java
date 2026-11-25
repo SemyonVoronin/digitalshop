@@ -1,14 +1,13 @@
 package school.voronin.digitalshop.service;
 
 import org.springframework.stereotype.Service;
+import school.voronin.digitalshop.entity.BidEntity;
 import school.voronin.digitalshop.entity.LotEntity;
-import school.voronin.digitalshop.model.Bid;
 import school.voronin.digitalshop.model.Lot;
 import school.voronin.digitalshop.model.LotStatus;
 import school.voronin.digitalshop.repository.BidRepository;
 import school.voronin.digitalshop.repository.LotRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -35,12 +34,10 @@ public class LotServiceImpl implements LotService {
     }
 
     @Override
-    public Lot getLotById(Long id) {
-        // Находим по hashCode (наш самодельный Long id)
-        return getAllLots().stream()
-                .filter(lot -> lot.id() != null && lot.id().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Лот не найден: " + id));
+    public Lot getLotById(UUID id) {
+        LotEntity entity = lotRepository.findById(id).
+                orElseThrow(() -> new NoSuchElementException("Лот не найден: " + id));
+        return toDomain(entity);
     }
 
     @Override
@@ -59,35 +56,36 @@ public class LotServiceImpl implements LotService {
     }
 
     @Override
-    public Lot closeLot(Long id) {
-        // Находим нужный LotEntity по нашему Long id (через поиск в списке)
-        LotEntity entity = lotRepository.findAll().stream()
-                .filter(e -> e.getId() != null) // Заглушка, так как ID теперь UUID
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Лот не найден"));
+    public Lot closeLot(UUID id) {
+        LotEntity entity = lotRepository.findById(id).
+                orElseThrow(() -> new NoSuchElementException("Лот не найден: " + id));
+
+        if (entity.getStatus() != LotStatus.ACTIVE){
+            throw new IllegalStateException("Лот не активен");
+        }
+
+        UUID winnerId = bidRepository.findTopByLotIdOrderByAmountDesc(id)
+                .map(BidEntity::getBuyerId)
+                .orElse(null);
 
         entity.setStatus(LotStatus.CLOSED);
-        lotRepository.save(entity);
-        return toDomain(entity);
+        entity.setWinnerId(winnerId);
+        LotEntity saved = lotRepository.save(entity);
+        return toDomain(saved);
     }
 
     @Override
-    public void cancelLot(Long id) {
-        LotEntity entity = lotRepository.findAll().stream()
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Лот не найден"));
+    public void cancelLot(UUID id) {
+        LotEntity entity = lotRepository.findById(id).
+                orElseThrow(() -> new NoSuchElementException("Лот не найден: " + id));
 
         entity.setStatus(LotStatus.CANCELLED);
         lotRepository.save(entity);
     }
 
-    // Мапперы
-    // Превращает сущность из БД в наш record (для контроллера)
     private Lot toDomain(LotEntity entity) {
         return new Lot(
-                // Берем UUID, переводим в строку, берем hashCode (он int, но мы кастуем в long)
-                // Это костыль, чтобы получить Long из UUID
-                entity.getId() != null ? (long) entity.getId().hashCode() : null,
+                entity.getId(),
                 entity.getTitle(),
                 entity.getDescription(),
                 entity.getStartPrice(),

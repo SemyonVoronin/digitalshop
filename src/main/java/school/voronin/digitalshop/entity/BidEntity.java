@@ -13,7 +13,7 @@ public class BidEntity extends BaseEntity{
     private UUID lotId;
 
     @Column(name = "buyer_id", nullable = false)
-    private Long buyerId;
+    private UUID buyerId;
 
     @Column(nullable = false)
     private BigDecimal amount;
@@ -25,8 +25,8 @@ public class BidEntity extends BaseEntity{
     public UUID getLotId(){ return lotId;}
     public void setLotId(UUID lotId){ this.lotId = lotId;}
 
-    public Long getBuyerId(){ return buyerId; }
-    public void setBuyerId(Long buyerId){ this.buyerId = buyerId; }
+    public UUID getBuyerId(){ return buyerId; }
+    public void setBuyerId(UUID buyerId){ this.buyerId = buyerId; }
 
     public BigDecimal getAmount(){ return amount; }
     public void setAmount(BigDecimal amount){ this.amount = amount; }

@@ -2,13 +2,13 @@ package school.voronin.digitalshop.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record Bid (
-        Long id,
-        Long lotId,
-        Long buyerId,
+        UUID id,
+        UUID lotId,
+        UUID buyerId,
         BigDecimal amount,
         LocalDateTime createdAt
-
         ){
 }

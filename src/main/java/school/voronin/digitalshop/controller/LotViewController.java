@@ -10,6 +10,7 @@ import school.voronin.digitalshop.service.BidService;
 import school.voronin.digitalshop.service.LotService;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/lots")
@@ -36,7 +37,7 @@ public class LotViewController {
     }
 
     @GetMapping("/{id}")
-    public String lotDetails(@PathVariable Long id, Model model) {
+    public String lotDetails(@PathVariable UUID id, Model model) {
         model.addAttribute("lot", lotService.getLotById(id));
         model.addAttribute("bids", bidService.getBidsByLotId(id));
         return "lot-details";
@@ -44,7 +45,7 @@ public class LotViewController {
 
     @PostMapping("/{id}/bid")
     public String placeBid(
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @RequestParam BigDecimal amount,
             HttpSession session,
             RedirectAttributes redirectAttributes

@@ -1,9 +1,9 @@
-CREATE TABLE products(
+CREATE TABLE products (
     id UUID PRIMARY KEY,
     created_at TIMESTAMP(6) WITH TIME ZONE NOT NULL,
     updated_at TIMESTAMP(6) WITH TIME ZONE NOT NULL,
     title VARCHAR(255) NOT NULL,
-    description VARCHAR(200) NOT NULL,
+    description VARCHAR(2000) NOT NULL,
     price NUMERIC(19, 2) NOT NULL,
     type VARCHAR(50) NOT NULL,
     stock INTEGER NOT NULL,

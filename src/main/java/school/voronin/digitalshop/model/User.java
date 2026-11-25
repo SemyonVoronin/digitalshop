@@ -1,7 +1,9 @@
 package school.voronin.digitalshop.model;
 
+import java.util.UUID;
+
 public record User (
-        Long id,
+        UUID id,
         String username,
         String email,
         String password,

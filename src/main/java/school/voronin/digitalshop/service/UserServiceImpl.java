@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService{
 
     private User toDomain(UserEntity entity){
         return new User(
-                (long) entity.getId().hashCode(),
+                entity.getId(),
                 entity.getUsername(),
                 entity.getEmail(),
                 entity.getPassword(),

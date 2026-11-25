@@ -1,9 +1,10 @@
 package school.voronin.digitalshop.controller;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public record BidRequest(
-        Long buyerId,
+        UUID buyerId,
         BigDecimal amount
 ) {
 

@@ -6,8 +6,8 @@ CREATE TABLE lots (
     description VARCHAR(2000) NOT NULL,
     start_price NUMERIC(19, 2) NOT NULL,
     current_price NUMERIC(19, 2) NOT NULL,
-    seller_id BIGINT,
-    winner_id BIGINT,
+    seller_id UUID,
+    winner_id UUID,
     status VARCHAR(50) NOT NULL,
     ends_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL
 );

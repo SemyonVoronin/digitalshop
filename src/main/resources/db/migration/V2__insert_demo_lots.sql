@@ -1,6 +1,6 @@
 INSERT INTO lots (id, created_at, updated_at, title, description, start_price, current_price, seller_id, status, ends_at)
 VALUES
 ('11111111-1111-4111-8111-111111111111', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Cyberpunk 2077',
-'Ролевая игра в открытом мире', 1000.00, 1000.00, 100, 'ACTIVE', CURRENT_TIMESTAMP + INTERVAL '7 days'),
+'Ролевая игра', 1000.00, 1000.00, '99999999-9999-4999-8999-999999999991', 'ACTIVE', CURRENT_TIMESTAMP + INTERVAL '7 days'),
 ('22222222-2222-4222-8222-222222222222', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'The Witcher 3',
-'Игра про Геральта из Ривии', 800.00, 800.00, 100, 'ACTIVE', CURRENT_TIMESTAMP + INTERVAL '3 days');
+'Игра про Геральта из Ривии', 800.00, 800.00, '99999999-9999-4999-8999-999999999991', 'ACTIVE', CURRENT_TIMESTAMP + INTERVAL '3 days');

@@ -8,6 +8,7 @@ import school.voronin.digitalshop.repository.ProductRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -24,10 +25,10 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product getProductById(Long id){
-        return getAllProducts().stream().
-                filter(p -> p.id() != null && p.id().equals(id)).findFirst().
-                orElseThrow(() -> new  NoSuchElementException("Товар не найден: " + id));
+    public Product getProductById(UUID id){
+        ProductEntity entity = productRepository.findById(id).
+                orElseThrow(() -> new NoSuchElementException("Товар не найден:" + id));
+        return toDomain(entity);
     }
 
     @Override
@@ -46,10 +47,10 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product updateProduct(Long id, Product product){
-        ProductEntity entity = productRepository.findAll().stream().
-                filter(e -> e.getId() != null && e.getId().hashCode() == id.intValue()).
-                findFirst().orElseThrow(() -> new NoSuchElementException("Товар не найден: " + id));
+    public Product updateProduct(UUID id, Product product){
+        ProductEntity entity = productRepository.findById(id).
+                orElseThrow(() -> new NoSuchElementException("Товар не найден: " + id));
+
 
         entity.setTitle(product.title());
         entity.setDescription(product.description());
@@ -64,23 +65,21 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void deleteProduct(Long id){
-        ProductEntity entity = productRepository.findAll().stream().
-                filter(e -> e.getId() != null && e.getId().hashCode() == id.intValue()).
-                findFirst().orElseThrow(() -> new NoSuchElementException("Товар не найден: " + id));
+    public void deleteProduct(UUID id){
+        ProductEntity entity = productRepository.findById(id).
+                orElseThrow(() -> new NoSuchElementException("Товаh не найден: " + id));
 
         productRepository.delete(entity);
 
     }
 
     @Override
-    public void decreaseStock(Long productId, int quantity){
-        ProductEntity entity = productRepository.findAll().stream().
-                filter(e -> e.getId() != null && e.getId().hashCode() == productId.intValue()).findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Товар не найден: " + productId));
+    public void decreaseStock(UUID productId, int quantity){
+        ProductEntity entity = productRepository.findById(productId).
+                orElseThrow(() -> new NoSuchElementException("Товар не найден: " + productId));
 
         if (entity.getStock() < quantity){
-            throw new NoSuchElementException("Товаров нет в наличии: " + entity.getStock());
+            throw new IllegalArgumentException("Товаров нет в наличии: " + entity.getStock());
         }
 
         entity.setStock(entity.getStock() - quantity);
@@ -89,7 +88,7 @@ public class ProductServiceImpl implements ProductService{
 
     private Product toDomain(ProductEntity entity) {
         return new Product(
-                entity.getId() != null ? (long) entity.getId().hashCode() : null,
+                entity.getId(),
                 entity.getTitle(),
                 entity.getDescription(),
                 entity.getPrice(),

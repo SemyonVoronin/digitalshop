@@ -1,4 +1,4 @@
-CREATE TABLE users(
+CREATE TABLE users (
     id UUID PRIMARY KEY,
     created_at TIMESTAMP(6) WITH TIME ZONE NOT NULL,
     updated_at TIMESTAMP(6) WITH TIME ZONE NOT NULL,
@@ -8,5 +8,4 @@ CREATE TABLE users(
     role VARCHAR(50) NOT NULL
 );
 
-CREATE UNIQUE INDEX uk_users_email ON users (email)
-
+CREATE UNIQUE INDEX uk_users_email ON users (email);

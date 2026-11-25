@@ -8,6 +8,7 @@ import school.voronin.digitalshop.model.Lot;
 import school.voronin.digitalshop.service.LotService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/lots")
@@ -37,7 +38,7 @@ public class LotController {
     }
 
     @GetMapping("/{id}")
-    public Lot getLotById(@PathVariable Long id){
+    public Lot getLotById(@PathVariable UUID id){
         log.info("Начало getLotById: id = {}", id);
         Lot lot = lotService.getLotById(id);
         log.info("Конец getLotById: lot = {}", lot);
@@ -54,7 +55,7 @@ public class LotController {
     }
 
     @PostMapping("/{id}/close")
-    public Lot closeLot(@PathVariable Long id){
+    public Lot closeLot(@PathVariable UUID id){
         log.info("Начало closeLot: id = {}", id);
         Lot closed = lotService.closeLot(id);
         log.info("Конец closeLot: закрытый лот = {}", closed);
@@ -63,7 +64,7 @@ public class LotController {
 
     @PostMapping("/{id}/cancel")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void cancelLot(@PathVariable Long id){
+    public void cancelLot(@PathVariable UUID id){
         log.info("Начало cancelLot: id = {}", id);
         lotService.cancelLot(id);
         log.info("Конец closeLot: отменённый лот = {}", id);

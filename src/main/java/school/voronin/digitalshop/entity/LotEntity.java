@@ -5,6 +5,7 @@ import school.voronin.digitalshop.model.LotStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "lots")
@@ -23,10 +24,10 @@ public class LotEntity extends BaseEntity{
     private BigDecimal currentPrice;
 
     @Column(name = "seller_id")
-    private Long sellerId;
+    private UUID sellerId;
 
     @Column(name = "winner_id")
-    private Long winnerId;
+    private UUID winnerId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -63,17 +64,17 @@ public class LotEntity extends BaseEntity{
         this.currentPrice = currentPrice;
     }
 
-    public Long getSellerId() {
+    public UUID getSellerId() {
         return sellerId;
     }
-    public void setSellerId(Long sellerId) {
+    public void setSellerId(UUID sellerId) {
         this.sellerId = sellerId;
     }
 
-    public Long getWinnerId() {
+    public UUID getWinnerId() {
         return winnerId;
     }
-    public void setWinnerId(Long winnerId) {
+    public void setWinnerId(UUID winnerId) {
         this.winnerId = winnerId;
     }
 
